@@ -1,0 +1,5 @@
+# i want to push the bin folder, but not its contents
+# thus this folder has to have a file
+*
+*/
+!.gitignore
