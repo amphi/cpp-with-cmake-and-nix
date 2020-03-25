@@ -3,7 +3,7 @@
 
 #include <catch2/catch.hpp>
 
-#include "bitmanipulation.hpp"
+#include <bitmanipulation.hpp>
 
 namespace bmi = bitmanipulation;
 

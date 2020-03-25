@@ -21,7 +21,7 @@ set_project_warnings(project_warnings)
 include(cmake/Sanitizers.cmake)
 enable_sanitizers(project_options)
 
-include_directories(include)
+add_subdirectory(lib)
 
 option(ENABLE_TESTING "Enable Test Builds" ON)
 if(ENABLE_TESTING)
@@ -30,4 +30,4 @@ if(ENABLE_TESTING)
     add_subdirectory(test)
 endif()
 
-add_subdirectory(src)
+add_subdirectory(app)
