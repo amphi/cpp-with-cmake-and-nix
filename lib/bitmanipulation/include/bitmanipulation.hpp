@@ -5,27 +5,51 @@
 
 namespace bitmanipulation {
 
-constexpr uintmax_t mask(unsigned bits, unsigned shift = 0) {
+/**
+ * Creates a bitmask. E.g. mask(2,2) = 0b1100
+ * @param bits  the number of set bits in the mask
+ * @param shift the set bits in the mask will be shifted to the left by this amount
+ */
+[[nodiscard]] constexpr auto mask(unsigned bits, unsigned shift = 0) -> uintmax_t
+{
     return ~(static_cast<uintmax_t>(~0) << bits) << shift;
 }
 
+/**
+ * Sets bits in a given value and returns the value with the additional set bits.
+ * E.g. set_bits(0b1100, 2, 0) = 0b1111
+ * @param value the given value
+ * @param bits  the number of bits to set
+ * @param shift the additionally set bits will be shifted to the left by this amount
+ */
 template <class T>
-constexpr T set_bits(T value, unsigned bits, unsigned shift = 0) {
+[[nodiscard]] constexpr auto set_bits(T value, unsigned bits, unsigned shift = 0) -> T
+{
     T mask = static_cast<T>(bitmanipulation::mask(bits, shift));
     return value | mask;
 }
 
+/**
+ * Clears bits in a given value and returns the value with the cleared bits.
+ * E.g. clear_bits(0b1111, 2, 1) = 0b1001
+ * @param value the given value
+ * @param bits  the number of bits to clear
+ * @param shift the cleared bits will be shifted to the left by this amount
+ */
 template <class T>
-constexpr T clear_bits(T value, unsigned bits, unsigned shift = 0) {
+[[nodiscard]] constexpr auto clear_bits(T value, unsigned bits, unsigned shift = 0) -> T
+{
     T mask = static_cast<T>(bitmanipulation::mask(bits, shift));
     return value & static_cast<T>(~mask);
 }
 
 /**
- * returns the number of set bits. (population count)
+ * Returns the number of set bits in the given value.
+ * E.g. count_bits_set(0b11) = 2
  */
 template <class T>
-unsigned count_bits_set(T value) {
+[[nodiscard]] constexpr auto count_bits_set(T value) -> unsigned
+{
     unsigned count { 0u };
     for (; value; count++) {
         value = value & static_cast<T>(value - 1);
@@ -34,10 +58,14 @@ unsigned count_bits_set(T value) {
 }
 
 template <class T>
-unsigned popcnt(T value) { return count_bits_set(value); }
+[[nodiscard]] constexpr auto popcnt(T value) -> unsigned { return count_bits_set(value); }
 
+/**
+ * Returns the number of leading zeroes in the given value.
+ * E.g. leading_zeroes_count(0b00001111) = 4
+ */
 template <class T>
-unsigned leading_zeroes_count(T value)
+[[nodiscard]] constexpr auto leading_zeroes_count(T value) -> unsigned
 {
     if (value == 0) {
         return sizeof(value) * CHAR_BIT;
@@ -57,10 +85,14 @@ unsigned leading_zeroes_count(T value)
 }
 
 template <class T>
-unsigned lzcnt(T value) { return leading_zeroes_count(value); }
+[[nodiscard]] constexpr auto lzcnt(T value) -> unsigned { return leading_zeroes_count(value); }
 
+/**
+ * Returns the number of trailing zeroes in the given value.
+ * E.g. trailing_zeroes_count(0b1100) = 2
+ */
 template <class T>
-unsigned trailing_zeroes_count(T value)
+constexpr auto trailing_zeroes_count(T value) -> unsigned
 {
     if (value == 0) {
         return sizeof(value) * CHAR_BIT;
@@ -80,40 +112,40 @@ unsigned trailing_zeroes_count(T value)
 }
 
 template <class T>
-unsigned tzcnt(T value) { return trailing_zeroes_count(value); }
+[[nodiscard]] constexpr auto tzcnt(T value) -> unsigned { return trailing_zeroes_count(value); }
 
 /**
- * isolates the lowest clear bit.
- * e.g. isolate_lowest_clear_bit(0b11100011) = 0b11111011
+ * Isolates the lowest clear bit in the given value.
+ * E.g. isolate_lowest_clear_bit(0b11100011) = 0b11111011
  */
 template <class T>
-constexpr T isolate_lowest_clear_bit(T v)
+[[nodiscard]] constexpr auto isolate_lowest_clear_bit(T v) -> T
 {
     return v | static_cast<T>(~(v + 1));
 }
 
 template <class T>
-constexpr T blci(T v) { return isolate_lowest_clear_bit(v); }
+[[nodiscard]] constexpr auto blci(T v) -> T { return isolate_lowest_clear_bit(v); }
 
 /**
- * isolates the lowest set bit.
- * e.g. isolate_lowest_set_bit(0b11100011) = 0b00000001
+ * Isolates the lowest set bit in the given value.
+ * E.g. isolate_lowest_set_bit(0b11100011) = 0b00000001
  */
 template <class T>
-constexpr T isolate_lowest_set_bit(T v)
+[[nodiscard]] constexpr auto isolate_lowest_set_bit(T v) -> T
 {
     return v & static_cast<T>(-v);
 }
 
 template <class T>
-constexpr T blsi(T v) { return isolate_lowest_set_bit(v); }
+[[nodiscard]] constexpr auto blsi(T v) -> T { return isolate_lowest_set_bit(v); }
 
 /**
- * clears all set bits to the right of the first clear bit
- * e.g. fill_from_lowest_clear_bit(0b11101011) = 0b11101000
+ * Clears all set bits to the right of the first clear bit in the given value.
+ * E.g. fill_from_lowest_clear_bit(0b11101011) = 0b11101000
  */
 template <class T>
-constexpr T fill_from_lowest_clear_bit(T v)
+[[nodiscard]] constexpr auto fill_from_lowest_clear_bit(T v) -> T
 {
     if (bitmanipulation::popcnt(v) == sizeof(v) * CHAR_BIT) {
         return v;
@@ -122,14 +154,14 @@ constexpr T fill_from_lowest_clear_bit(T v)
 }
 
 template <class T>
-constexpr T blcfill(T v) { return fill_from_lowest_clear_bit(v); }
+[[nodiscard]] constexpr auto blcfill(T v) -> T { return fill_from_lowest_clear_bit(v); }
 
 /**
- * sets all clear bits to the right of the first set bit
- * e.g. fill_from_lowest_set_bit(0b01110100) = 0b01110111
+ * Sets all clear bits to the right of the first set bit in the given value.
+ * E.g. fill_from_lowest_set_bit(0b01110100) = 0b01110111
  */
 template <class T>
-constexpr T fill_from_lowest_set_bit(T v)
+[[nodiscard]] constexpr auto fill_from_lowest_set_bit(T v) -> T
 {
     if (bitmanipulation::popcnt(v) == 0) {
         return 0;
@@ -138,32 +170,32 @@ constexpr T fill_from_lowest_set_bit(T v)
 }
 
 template <class T>
-constexpr T blsfill(T v) { return fill_from_lowest_set_bit(v); }
+[[nodiscard]] constexpr auto blsfill(T v) -> T { return fill_from_lowest_set_bit(v); }
 
 /**
- * clears the lowest set bit
- * e.g. clear_lowest_set_bit(0b11100010) = 0b11100000
+ * Clears the lowest set bit in the given value.
+ * E.g. clear_lowest_set_bit(0b11100010) = 0b11100000
  */
 template <class T>
-constexpr T clear_lowest_set_bit(T v)
+[[nodiscard]] constexpr auto clear_lowest_set_bit(T v) -> T
 {
     return v & static_cast<T>(v - 1);
 }
 
 template <class T>
-constexpr T blsc(T v) { return clear_lowest_set_bit(v); }
+[[nodiscard]] constexpr auto blsc(T v) -> T { return clear_lowest_set_bit(v); }
 
 /**
- * sets the lowest clear bit
- * e.g. set_lowest_clear_bit(0b11100011) = 0b11100111
+ * Sets the lowest clear bit in the given value.
+ * E.g. set_lowest_clear_bit(0b11100011) = 0b11100111
  */
 template <class T>
-constexpr T set_lowest_clear_bit(T v)
+[[nodiscard]] constexpr auto set_lowest_clear_bit(T v) -> T
 {
     return v | static_cast<T>(v + 1);
 }
 
 template <class T>
-constexpr T blcs(T v) { return set_lowest_clear_bit(v); }
+[[nodiscard]] constexpr auto blcs(T v) -> T { return set_lowest_clear_bit(v); }
 
 } // namespace bitmanipulation

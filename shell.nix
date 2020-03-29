@@ -9,8 +9,9 @@ with pkgs;
 stdenv.mkDerivation {
     name = "build-env";
     buildInputs = [
-        gcc
         catch2
+        clang-tools
         cmake
+        gcc
     ];
 }

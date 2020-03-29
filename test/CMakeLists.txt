@@ -3,6 +3,9 @@ find_package(Catch2 REQUIRED)
 include(CTest)
 include(Catch)
 
+# Disable clang-tidy for this subfolder
+set(CMAKE_CXX_CLANG_TIDY "")
+
 add_library(catch_main STATIC catch_main.cpp)
 target_link_libraries(catch_main PUBLIC Catch2::Catch2)
 

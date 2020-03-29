@@ -21,16 +21,14 @@ function(set_project_warnings project_name)
                    # (i.e. printf)
     )
 
-    if (NOT CMAKE_BUILD_TYPE EQUAL "Debug")
+    if(NOT CMAKE_BUILD_TYPE EQUAL "Debug")
         set(CLANG_WARNINGS ${CLANG_WARNINGS} -Werror)
-        message(
-            STATUS "Treating compiler warnings as errors.")
+        message(STATUS "Treating compiler warnings as errors.")
     endif()
 
-    if (CMAKE_BUILD_TYPE EQUAL "Debug")
+    if(CMAKE_BUILD_TYPE EQUAL "Debug")
         set(CLANG_WARNINGS ${CLANG_WARNINGS} -g)
-        message(
-            STATUS "Building with debug-flag.")
+        message(STATUS "Building with debug-flag.")
     endif()
 
     set(GCC_WARNINGS
@@ -44,7 +42,7 @@ function(set_project_warnings project_name)
         -Wuseless-cast # warn if you perform a cast to the same type
     )
 
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR ENABLE_CLANG_TIDY)
         set(PROJECT_WARNINGS ${CLANG_WARNINGS})
     else()
         set(PROJECT_WARNINGS ${GCC_WARNINGS})
