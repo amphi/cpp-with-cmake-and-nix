@@ -42,7 +42,7 @@ function(set_project_warnings project_name)
         -Wuseless-cast # warn if you perform a cast to the same type
     )
 
-    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR ENABLE_CLANG_TIDY)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         set(PROJECT_WARNINGS ${CLANG_WARNINGS})
     else()
         set(PROJECT_WARNINGS ${GCC_WARNINGS})
