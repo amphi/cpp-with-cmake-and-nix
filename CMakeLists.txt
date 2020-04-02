@@ -10,16 +10,15 @@ include(cmake/StandardProjectSettings.cmake)
 add_library(project_options INTERFACE)
 target_compile_features(project_options INTERFACE cxx_std_17)
 
-# Link this 'library' to use the warnings specified in CompilerWarnings.cmake
-add_library(project_warnings INTERFACE)
-
-# include static analysis before adding compiler warnings, as I have to exclude
-# g++ specific compiler warnings if clang-tidy is enabled
-include(cmake/StaticAnalysis.cmake)
-
 # standard compiler warnings
 include(cmake/CompilerWarnings.cmake)
-set_project_warnings(project_warnings)
+
+# Link this 'library' to use the warnings specified in CompilerWarnings.cmake
+add_library(project_warnings INTERFACE)
+set_default_project_warnings(project_warnings)
+
+# include static analysis
+include(cmake/StaticAnalysis.cmake)
 
 # sanitizer options if supported by compiler
 include(cmake/Sanitizers.cmake)

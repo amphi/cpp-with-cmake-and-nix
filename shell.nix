@@ -11,6 +11,7 @@ stdenv.mkDerivation {
     buildInputs = [
         catch2
         clang-tools
+        clang
         cmake
         gcc
     ];
