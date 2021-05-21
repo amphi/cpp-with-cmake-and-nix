@@ -13,12 +13,10 @@ target_link_libraries(catch_main PUBLIC project_warnings project_options
 add_executable(bitmanipulation_test bitmanipulation_test.cpp)
 target_link_libraries(bitmanipulation_test PRIVATE project_warnings project_options
                                                    catch_main bitmanipulation)
-add_test(NAME bitmanipulation_unit_test COMMAND bitmanipulation_test)
 
 add_executable(rpn_parser_test rpn_parser_test.cpp)
 target_link_libraries(rpn_parser_test PRIVATE project_warnings project_options
                                               catch_main rpn_parser)
-add_test(NAME rpn_parser_unit_test COMMAND rpn_parser_test)
 
 # after compiling, you can run "ctest" to run all added tests
 
