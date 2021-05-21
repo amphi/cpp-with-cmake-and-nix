@@ -14,5 +14,6 @@ stdenv.mkDerivation {
         clang
         cmake
         gcc
+        ninja
     ];
 }

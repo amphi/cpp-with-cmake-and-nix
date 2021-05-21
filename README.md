@@ -1,8 +1,26 @@
 # Building cpp projects with cmake and nix
 
-This project is intended to serve as a template for cpp projects.
+This project is intended to serve as a learning project for cpp projects.
 I will extend this readme throughout the work on this project and collect thoughts, goals and useful links here.
-I will include some test cpp/hpp files to show how all of this works (and to test it). 
+I will include some test cpp/hpp files to show how all of this works (and to test it).
+
+## How to build
+
+Nix installs all the dependencies, you can use CMake to build the project:
+
+```bash
+$ nix-shell
+nix-shell$ cd bin
+nix-shell& cmake .. -G Ninja
+nix-shell& ninja
+```
+
+This project uses Catch2 and libFuzzer to test the libraries, you can run them
+from inside the `bin` folder:
+
+```bash
+nix-shell$ ctest
+```
 
 ## Goals
 
